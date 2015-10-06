@@ -1,0 +1,8 @@
+{
+  "name": "Angular Services App",
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "angular-cookies": "~1.4.7"
+  }
+}

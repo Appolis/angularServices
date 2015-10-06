@@ -1,0 +1,19 @@
+<h3>All books</h3>
+
+<div>
+    <ul>
+        <li ng-repeat="book in bookCtrl.allBooks">
+            {{ book.title }} - {{ book.author }} <a href="/EditBook/{{ book.book_id }}">Edit</a>
+        </li>
+    </ul>
+</div>
+
+<h3>All Readers</h3>
+
+<div>
+    <ul>
+        <li ng-repeat="reader in bookCtrl.allReaders">
+            {{ reader.name }} - {{ bookCtrl.getBadge(reader.totalMinutesRead) }}
+        </li>
+    </ul>
+</div>
