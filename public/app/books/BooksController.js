@@ -1,16 +1,15 @@
-/**
- * Created by default on 10/6/2015.
- */
+"use strict";
+
 (function(){
 
     angular.module('app')
-        .controller('BooksController', ['books', 'dataService', 'logger', 'badgeService', '$q', BooksController] );
+        .controller('BooksController', ['books', 'dataService', 'badgeService', '$q', '$cookies', '$cookieStore', '$log', '$route', BooksController] );
 
-    function BooksController(books, dataService, logger, badgeService, $q){
+    function BooksController(books, dataService, badgeService, $q, $cookies, $cookieStore, $log, $route){
         var vm = this;
         vm.appName = books.appName;
 
-        var booksPromise = dataService.getAllBooks();
+       /* var booksPromise = dataService.getAllBooks();
         var readersPromise = dataService.getAllReaders();
 
         $q.all( [booksPromise, readersPromise] )
@@ -24,45 +23,61 @@
 
         function getAllDataError(reason){
             console.log(reason);
-        }
+        }*/
 
-        /* function getBooksSuccess(books){
+        dataService.getAllBooks()
+            .then(getBooksSuccess, null, getBooksNotification)
+            .catch(errorCallback)
+            .finally(getAllBooksComplete);
+
+        function getBooksSuccess(books){
             vm.allBooks = books;
         }
 
-       function getBookNotifications(notification){
-            console.log('Promise notification: ' + notification);
+        function getBooksNotification(notification){
+            console.log('Promise Notification: ' + notification );
         }
 
-        function errorCallback(errorMessage){
-            console.log("Error message: " + errorMessage);
+        function errorCallback(errMsg) {
+            console.log('Error Message: ' + errMsg );
         }
 
         function getAllBooksComplete(){
-            console.log("getAllBooks has been completed.");
+            console.log('getAllBooks has completed.');
         }
+
+        dataService.getAllReaders()
+            .then(getReadersSuccess)
+            .catch(errorCallback)
+            .finally(getAllReadersComplete);
 
         function getReadersSuccess(readers){
             vm.allReaders = readers;
         }
 
         function getAllReadersComplete(){
-            console.log("getAllReaders has been completed.");
+            console.log('getAllReaders has Completed');
         }
 
-        dataService.getAllBooks()
-            .then(getBooksSuccess, null, getBookNotifications)
-            .catch(errorCallback)
-            .finally(getAllBooksComplete);
+        vm.deleteBook = function(bookID){
+            dataService.deleteBook(bookID)
+                .then(deleteBookSuccess)
+                .catch(deleteBookError);
+        };
 
-        dataService.getAllReaders()
-            .then(getReadersSuccess)
-            .catch(errorCallback)
-            .finally(getAllReadersComplete);*/
+        function deleteBookSuccess(message){
+            $log.info(message);
+            $route.reload();
+        }
 
+        function deleteBookError(errorMessage){
+            $log.error(errorMessage);
+        }
 
         vm.getBadge = badgeService.retrieveBadge;
 
-        logger.output('BooksController has been created.');
+        vm.favoriteBook = $cookies.favoriteBook;
+
+        vm.lastEdited = $cookieStore.get('lastEdited');
     }
 }());

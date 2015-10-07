@@ -1,6 +1,3 @@
-/**
- * Created by default on 10/6/2015.
- */
 "use strict";
 
 ( function(){
@@ -32,33 +29,32 @@
         }]);
     });
 
-    app.config( ['booksProvider', 'dataServiceProvider', '$routeProvider', function(booksProvider, $routeProvider){
+    app.config( ['booksProvider', '$routeProvider', '$logProvider', '$httpProvider', function(booksProvider, $routeProvider, $logProvider, $httpProvider){
         booksProvider.setIncludeVersionInTitle(true);
+        $logProvider.debugEnabled(true);
+
+        $httpProvider.interceptors.push('bookLoggerInterceptor');
+
         $routeProvider
             .when('/', {
-                templateUrl: '/app/templates/books.html',
+                templateUrl: './app/templates/books.html',
                 controller: 'BooksController',
                 controllerAs: 'books'
             })
             .when('/AddBook', {
-                templateUrl: '/app/templates/addBook.html',
+                templateUrl: './app/templates/addBook.html',
                 controller: 'AddBookController',
-                controllerAs: 'addBook'
+                controllerAs: 'bookAdder'
             })
             .when('/EditBook/:bookID', {
-                templateUrl: '/app/templates/editBook.html',
+                templateUrl: './app/templates/editBook.html',
                 controller: 'EditBookController',
-                controllerAs: 'bookEditor',
-                resolve: {
-                    books: function(dataService){
-                        return dataService.getAllBooks();
-                    }
-                }
+                controllerAs: 'bookEditor'
             })
             .otherwise('/');
     }]);
 
-    app.run('$rootScope', function($rootScope){
+    app.run(['$rootScope', function($rootScope){
         $rootScope.$on('$routeChangeSuccess', function(event, current, previous){
 
             console.log('successfully changed routes.');
@@ -73,5 +69,5 @@
             console.log(previous);
             console.log(rejection);
         });
-    });
+    }]);
 }());

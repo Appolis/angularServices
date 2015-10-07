@@ -5,7 +5,7 @@
         <label for="bookTitle" class="col-sm-1 contro-label">Title</label>
 
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="bookTitle" placeholder="Title">
+            <input ng-model="bookAdder.newBook.title" type="text" class="form-control" id="bookTitle" placeholder="Title">
         </div>
     </div>
 
@@ -13,7 +13,7 @@
         <label for="bookAuthor" class="col-sm-1 contro-label">Author</label>
 
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="bookAuthor" placeholder="Author">
+            <input ng-model="bookAdder.newBook.author" type="text" class="form-control" id="bookAuthor" placeholder="Author">
         </div>
     </div>
 
@@ -21,13 +21,13 @@
         <label for="bookPublished" class="col-sm-1 contro-label">Year</label>
 
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="bookPublished" placeholder="Year Published">
+            <input ng-model="bookAdder.newBook.year_published" type="text" class="form-control" id="bookPublished" placeholder="Year Published">
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-5">
-            <button class="btn btn-default">Save</button>
+            <button ng-model="bookAdder.addBook()" class="btn btn-default">Save</button>
         </div>
     </div>
 </form>
